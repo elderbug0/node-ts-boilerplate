@@ -74,11 +74,41 @@ class AudioController {
           headers: { Authorization: `Bearer ${this.authToken}` },
         }
       );
-      
+
       console.log('Messages response:', response.data); // Debug log
-      return res.status(200).json(response.data);
+
+      const analyticsResponse = await axios.get(
+        `https://api.symbl.ai/v1/conversations/${conversationId}/analytics`,
+        {
+          headers: { Authorization: `Bearer ${this.authToken}` },
+        }
+      );
+
+      console.log('Analytics response:', analyticsResponse.data); // Debug log
+
+      return res.status(200).json({ messages: response.data, analytics: analyticsResponse.data });
     } catch (error: any) {
       console.log('Error fetching messages:', error.message); // Debug log
+      return res.status(500).json({ error: error.message });
+    }
+  };
+
+  analyze = async (req: Request, res: Response) => {
+    try {
+      const { conversationId } = req.body;
+      console.log('Fetching analytics for conversationId:', conversationId); // Debug log
+
+      const response = await axios.get(
+        `https://api.symbl.ai/v1/conversations/${conversationId}/analytics`,
+        {
+          headers: { Authorization: `Bearer ${this.authToken}` },
+        }
+      );
+
+      console.log('Analytics response:', response.data); // Debug log
+      return res.status(200).json(response.data);
+    } catch (error: any) {
+      console.log('Error fetching analytics:', error.message); // Debug log
       return res.status(500).json({ error: error.message });
     }
   };

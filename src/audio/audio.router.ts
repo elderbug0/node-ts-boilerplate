@@ -25,4 +25,5 @@ const audioController = new AudioController(audioService, authToken);
 
 audioRouter.post('/audio/upload', upload.single('audio'), audioController.uploadAndSendAudio)
 audioRouter.post('/audio/messages', upload.single('audio'), audioController.getMessages)
+audioRouter.post('/audio/analyze', audioController.analyze)
 export default audioRouter;
