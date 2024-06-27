@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import AudioService from "./audio.service";
 import axios from "axios";
 import request from "request";
-import * as fs from 'fs'
+import * as fs from 'fs';
 
 const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
@@ -44,7 +44,7 @@ class AudioController {
         404: 'The conversation and/or it\'s metadata you asked could not be found, please check the input provided',
         429: 'Maximum number of concurrent jobs reached. Please wait for some requests to complete.',
         500: 'Something went wrong! Please contact support@symbl.ai'
-      }
+      };
 
       audioFileStream.pipe(request.post(audioOption, (err, response, body) => {
         const statusCode = response.statusCode;
@@ -62,43 +62,56 @@ class AudioController {
   };
 
   getMessages = async (req: Request, res: Response) => {
-    try {
-      const { conversationId } = req.body;
-      console.log('Fetching messages for conversationId:', conversationId); // Debug log
+    const { conversationId } = req.body;
+    const interval = 30000; // 30 seconds
+    let resultSent = false;
 
-      await sleep(20000); // Adjust the delay time as needed
+    const checkMessages = async () => {
+      try {
+        const messagesResponse = await axios.get(
+          `https://api.symbl.ai/v1/conversations/${conversationId}/messages?sentiment=true`,
+          {
+            headers: { Authorization: `Bearer ${this.authToken}` },
+          }
+        );
 
-      // Fetch messages with sentiment analysis
-      const messagesResponse = await axios.get(
-        `https://api.symbl.ai/v1/conversations/${conversationId}/messages?sentiment=true`,
-        {
-          headers: { Authorization: `Bearer ${this.authToken}` },
+        const analyticsResponse = await axios.get(
+          `https://api.symbl.ai/v1/conversations/${conversationId}/analytics`,
+          {
+            headers: { Authorization: `Bearer ${this.authToken}` },
+          }
+        );
+
+        if (
+          messagesResponse.data &&
+          messagesResponse.data.messages &&
+          messagesResponse.data.messages.length > 0 ||
+          analyticsResponse.data &&
+          analyticsResponse.data.analytics &&
+          analyticsResponse.data.analytics.length > 0
+        ) {
+          const combinedResponse = {
+            transcript: messagesResponse.data,
+            analytics: analyticsResponse.data
+          };
+          res.status(200).json(combinedResponse);
+          resultSent = true;
         }
-      );
+      } catch (error: any) {
+        console.log('Error fetching messages and analytics:', error.message);
+      }
+    };
 
-      console.log('Messages response:', messagesResponse.data); // Debug log
+    const intervalId = setInterval(async () => {
+      if (!resultSent) {
+        await checkMessages();
+      } else {
+        clearInterval(intervalId);
+      }
+    }, interval);
 
-      // Fetch analytics
-      const analyticsResponse = await axios.get(
-        `https://api.symbl.ai/v1/conversations/${conversationId}/analytics`,
-        {
-          headers: { Authorization: `Bearer ${this.authToken}` },
-        }
-      );
-
-      console.log('Analytics response:', analyticsResponse.data); // Debug log
-
-      // Combine the results into a single response
-      const combinedResponse = {
-        transcript: messagesResponse.data,
-        analytics: analyticsResponse.data
-      };
-
-      return res.status(200).json(combinedResponse);
-    } catch (error: any) {
-      console.log('Error fetching messages and analytics:', error.message); // Debug log
-      return res.status(500).json({ error: error.message });
-    }
+    // Initial check
+    await checkMessages();
   };
 
   analyze = async (req: Request, res: Response) => {
