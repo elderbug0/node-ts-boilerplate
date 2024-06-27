@@ -68,15 +68,17 @@ class AudioController {
 
       await sleep(20000); // Adjust the delay time as needed
 
-      const response = await axios.get(
+      // Fetch messages with sentiment analysis
+      const messagesResponse = await axios.get(
         `https://api.symbl.ai/v1/conversations/${conversationId}/messages?sentiment=true`,
         {
           headers: { Authorization: `Bearer ${this.authToken}` },
         }
       );
 
-      console.log('Messages response:', response.data); // Debug log
+      console.log('Messages response:', messagesResponse.data); // Debug log
 
+      // Fetch analytics
       const analyticsResponse = await axios.get(
         `https://api.symbl.ai/v1/conversations/${conversationId}/analytics`,
         {
@@ -86,9 +88,15 @@ class AudioController {
 
       console.log('Analytics response:', analyticsResponse.data); // Debug log
 
-      return res.status(200).json({ messages: response.data, analytics: analyticsResponse.data });
+      // Combine the results into a single response
+      const combinedResponse = {
+        transcript: messagesResponse.data,
+        analytics: analyticsResponse.data
+      };
+
+      return res.status(200).json(combinedResponse);
     } catch (error: any) {
-      console.log('Error fetching messages:', error.message); // Debug log
+      console.log('Error fetching messages and analytics:', error.message); // Debug log
       return res.status(500).json({ error: error.message });
     }
   };
