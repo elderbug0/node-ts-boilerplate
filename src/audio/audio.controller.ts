@@ -32,7 +32,7 @@ class AudioController {
         url: 'https://api.symbl.ai/v1/process/audio',
         headers: {
           'Authorization': `Bearer ${this.authToken}`,
-          'Content-Type': 'audio/mp3'
+          'Content-Type': 'audio/wav'
         },
         qs: params,
         json: true,
