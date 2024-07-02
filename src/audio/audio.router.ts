@@ -6,7 +6,7 @@ import multer from 'multer';
 // Set up storage for uploaded files
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-      cb(null, 'uploads/');
+      cb(null, 'audio_data/');
     },
     filename: (req, file, cb) => {
       cb(null, Date.now() + '-' + file.originalname);
@@ -18,12 +18,12 @@ const storage = multer.diskStorage({
 
 const audioRouter = Router();
 
-const authToken = "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IlFVUTRNemhDUVVWQk1rTkJNemszUTBNMlFVVTRRekkyUmpWQ056VTJRelUxUTBVeE5EZzFNUSJ9.eyJodHRwczovL3BsYXRmb3JtLnN5bWJsLmFpL3VzZXJJZCI6IjQ4NTUwNjczMTk1OTkxMDQiLCJpc3MiOiJodHRwczovL2RpcmVjdC1wbGF0Zm9ybS5hdXRoMC5jb20vIiwic3ViIjoicEJFOUJHSUdqeXpUTGZhQ0k4VFVBU2FUU1hqVjRiU3dAY2xpZW50cyIsImF1ZCI6Imh0dHBzOi8vcGxhdGZvcm0ucmFtbWVyLmFpIiwiaWF0IjoxNzE5NTY2NTA3LCJleHAiOjE3MTk2NTI5MDcsImd0eSI6ImNsaWVudC1jcmVkZW50aWFscyIsImF6cCI6InBCRTlCR0lHanl6VExmYUNJOFRVQVNhVFNYalY0YlN3In0.IneTlA6cc2xU2tZbGRpMSROlXmCY5xT-2c8I_DKOal8vfyFv-UiNkYs2lP0mpouwSj8zWrTIsEBfsKHe9Hv46fAqc1rGaEtUvE5qQ80CVeWOcMym6ZFnOOGZ7bd7TycVFI4oTAqtJhsF7IXc5jhLL78pnwNkSD9dFWn_5scXRDFptZbk7f6J0s4F3Voyyd6ZKf6_kkGq5Lg3DWsX1z0RxDPmtVj9vaBldhONjfW4q0LxMUgT-fWpzSmheWYzICjXmvI0ITCxNXowyRANeY5AYlqY1QY-d_nOlEVzaH2-U6Q4qnKSp4IApUNNZOCAhCZzmevcJ4nCnpQZByHaXRCDuQ";
+const authToken = "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IlFVUTRNemhDUVVWQk1rTkJNemszUTBNMlFVVTRRekkyUmpWQ056VTJRelUxUTBVeE5EZzFNUSJ9.eyJodHRwczovL3BsYXRmb3JtLnN5bWJsLmFpL3VzZXJJZCI6IjQ4NTUwNjczMTk1OTkxMDQiLCJpc3MiOiJodHRwczovL2RpcmVjdC1wbGF0Zm9ybS5hdXRoMC5jb20vIiwic3ViIjoicEJFOUJHSUdqeXpUTGZhQ0k4VFVBU2FUU1hqVjRiU3dAY2xpZW50cyIsImF1ZCI6Imh0dHBzOi8vcGxhdGZvcm0ucmFtbWVyLmFpIiwiaWF0IjoxNzE5OTAyNjM3LCJleHAiOjE3MTk5ODkwMzcsImd0eSI6ImNsaWVudC1jcmVkZW50aWFscyIsImF6cCI6InBCRTlCR0lHanl6VExmYUNJOFRVQVNhVFNYalY0YlN3In0.ARzZot9WHBZei5vsu61FN8Chvq2-nYvvL_BiuNv67RcTF7huoKF0_TfSW0ZW9uQIMzhmiZnXUwCxZDKDINBc_fx34RIvuoi_S-pUpAmtFF3SLbG-4vxzlzMiTNyVkfK6eNKXyogFzrc7-Y3KDkMAGIRt_HG7zYugqyNEbjT7d6B45d6JZUAKF41zMepw9QQsm3erhxtjk0Tx3QT29_z7v2zRWwsWdQwtHYFM71GsNiXoGKxEel42BNxWSIQSu2Kmqj4VMBF7EkJYQJiL06IYjKT7DqBrQhjWDEhAvHDz99UoJpdH9hDZpSR1RInsGwhrkkw0XmSDUdOQNgclRT6K7A";
 
 const audioService = new AudioService(authToken);
 const audioController = new AudioController(audioService, authToken);
 
-audioRouter.post('/audio/upload', upload.single('audio'), audioController.uploadAndSendAudio)
-audioRouter.post('/audio/messages', upload.single('audio'), audioController.getMessages)
-audioRouter.post('/audio/analyze', audioController.analyze)
+audioRouter.post('/upload', upload.single('audio'), audioController.uploadAndSendAudio)
+audioRouter.post('/messages', upload.single('audio'), audioController.getMessages)
+audioRouter.post('/analyze', audioController.analyze)
 export default audioRouter;

@@ -1,11 +1,14 @@
 import { Router } from 'express';
 import audioRouter from './audio/audio.router';
-// other routers can be imported here
+import videoRouter from './video/videoRouter'; // Import the video router
 
 const globalRouter = Router();
 
-// Use the userRouter for user-related routes
-globalRouter.use(audioRouter);
+// Use the audioRouter for audio-related routes
+globalRouter.use('/audio', audioRouter);
+
+// Use the videoRouter for video-related routes
+globalRouter.use('/video', videoRouter);
 
 // other routers can be added here
 

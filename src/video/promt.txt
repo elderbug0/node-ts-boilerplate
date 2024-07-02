@@ -1,0 +1,39 @@
+Please analyze the following video and provide detailed data on the speaker's body language. Specifically, extract and report on the following aspects:
+
+Posture Analysis:
+
+Duration of different postures (e.g., standing, sitting, leaning).
+Frequency and types of posture changes.
+Stability and balance during the speech.
+Gesture Analysis:
+
+Frequency and types of hand gestures (e.g., open palm, pointing).
+Range and fluidity of arm movements.
+Frequency and types of head movements (e.g., nods, shakes).
+Facial Expressions:
+
+Detection and duration of emotions (e.g., happiness, sadness, anger).
+Changes and transitions in facial expressions.
+Duration and frequency of eye contact with the camera.
+Body Orientation:
+
+Direction the body is facing relative to the camera/audience.
+Frequency and types of orientation changes.
+Movement Analysis:
+
+Frequency and types of walking or pacing.
+Speed of movements (e.g., fast, slow, abrupt).
+Proximity and Space Usage:
+
+Use of personal space (e.g., moving closer or further from the camera).
+Effective use of the space around the speaker.
+Pose Analysis:
+
+Confidence scores for detected poses.
+Symmetry in body posture and movements.
+Smoothness and effectiveness of pose transitions.
+Non-verbal Cues:
+
+Detection of microexpressions indicating underlying emotions.
+Small movements (e.g., twitching, fidgeting) that could indicate nervousness or other emotions.
+Ensure the data is accurate and avoid including any speculative or inferred information beyond the visible evidence in the video. Please provide a summary of the findings as well as detailed data points for each aspect listed.

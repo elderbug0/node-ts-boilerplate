@@ -63,7 +63,7 @@ class AudioController {
 
   getMessages = async (req: Request, res: Response) => {
     const { conversationId } = req.body;
-    const interval = 30000; // 30 seconds
+    const interval = 10000; // 30 seconds
     let resultSent = false;
 
     const checkMessages = async () => {
