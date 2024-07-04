@@ -20,6 +20,7 @@ export const handleVideoUpload = [
       }
 
       const { path: filePath, originalname } = req.file;
+      const { language } = req.body; // Get the language from the request body
       console.log(`Received file: ${originalname} at ${filePath}`); // Log the file info
 
       // Save the video file to 'video_data'
@@ -34,8 +35,8 @@ export const handleVideoUpload = [
       // Check the state of the uploaded file
       await checkFileState(uploadResult.file.name);
 
-      // Generate content using the uploaded video file
-      const result = await generateContent(uploadResult.file.uri, uploadResult.file.mimeType);
+      // Generate content using the uploaded video file and the language
+      const result = await generateContent(uploadResult.file.uri, uploadResult.file.mimeType, language);
       console.log(`Generated content: ${JSON.stringify(result)}`); // Log the generated content
 
       // Ensure the response structure is valid

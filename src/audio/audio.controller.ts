@@ -18,12 +18,13 @@ class AudioController {
   uploadAndSendAudio = async (req: Request, res: Response) => {
     try {
       const file = req.file;
+      const language = req.body.language || 'en'; // Default to English if not provided
       if (!file) {
         return res.status(400).send("Audio file is missing");
       }
       const params = {
         name: "Audio",
-        languageCode: "en-US",
+        languageCode: language === 'ru' ? "ru-RU" : "en-US",
       };
 
       const audioFileStream = fs.createReadStream(file.path);
@@ -53,6 +54,11 @@ class AudioController {
         }
         console.log('Status code: ', statusCode);
         console.log('Body', response.body);
+        fs.unlink(file.path, (unlinkErr) => {
+          if (unlinkErr) {
+            console.error('Error deleting file:', unlinkErr.message);
+          }
+        });
         return res.status(200).json(response.body);
       }));
     } catch (error: any) {
@@ -63,7 +69,7 @@ class AudioController {
 
   getMessages = async (req: Request, res: Response) => {
     const { conversationId } = req.body;
-    const interval = 10000; // 30 seconds
+    const interval = 40000; // 30 seconds
     let resultSent = false;
 
     const checkMessages = async () => {

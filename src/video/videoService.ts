@@ -1,5 +1,5 @@
 import { GoogleAIFileManager, FileState } from "@google/generative-ai/server";
-import { GoogleGenerativeAI, HarmBlockThreshold, HarmCategory } from "@google/generative-ai";
+import { GoogleGenerativeAI } from "@google/generative-ai";
 import fs from 'fs';
 import path from 'path';
 
@@ -39,8 +39,8 @@ export const checkFileState = async (fileName: string): Promise<void> => {
   console.log(`File ${file.displayName} is ready for inference as ${file.uri}`);
 };
 
-export const generateContent = async (fileUri: string, mimeType: string) => {
-  const promptFilePath = path.join('./src/video/promt.txt');
+export const generateContent = async (fileUri: string, mimeType: string, language: string) => {
+  const promptFilePath = language === 'ru' ? path.join('./src/video/promt2.txt') : path.join('./src/video/promt.txt');
   const prompt = readPromptFile(promptFilePath);
   const model = genAI.getGenerativeModel({
     model: "gemini-1.5-flash",
