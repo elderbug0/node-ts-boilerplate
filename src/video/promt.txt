@@ -5,7 +5,7 @@ Duration of different postures (e.g., standing, sitting, leaning).
 Frequency and types of posture changes.
 Stability and balance during the speech.
 
-*Gesture Analysis:*
+*Gesture Analysis:**
 Frequency and types of hand gestures (e.g., open palm, pointing).
 Range and fluidity of arm movements.
 Frequency and types of head movements (e.g., nods, shakes).
