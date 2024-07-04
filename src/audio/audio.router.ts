@@ -1,20 +1,30 @@
 import { Router } from 'express';
+import multer from 'multer';
 import AudioService from './audio.service';
 import AudioController from './audio.controller';
-import multer from 'multer';
+import * as fs from 'fs';
+import * as path from 'path';
+
+// Ensure the audio_data directory exists
+const audioDataDir = path.resolve(__dirname, 'audio_data');
+if (!fs.existsSync(audioDataDir)) {
+  fs.mkdirSync(audioDataDir);
+}
 
 // Set up storage for uploaded files
 const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-      cb(null, 'audio_data/');
-    },
-    filename: (req, file, cb) => {
-      cb(null, Date.now() + '-' + file.originalname);
-    }
-  });
-  
-  // Create the multer instance
-  const upload = multer({ storage: storage });
+  destination: (req, file, cb) => {
+    cb(null, audioDataDir);
+  },
+  filename: (req, file, cb) => {
+    const fileName = Date.now() + '-' + file.originalname;
+    console.log(`Saving file as: ${fileName}`);
+    cb(null, fileName);
+  }
+});
+
+// Create the multer instance
+const upload = multer({ storage: storage });
 
 const audioRouter = Router();
 

@@ -3,6 +3,7 @@ import AudioService from "./audio.service";
 import axios from "axios";
 import request from "request";
 import * as fs from 'fs';
+import * as path from 'path';
 
 const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
@@ -22,12 +23,18 @@ class AudioController {
       if (!file) {
         return res.status(400).send("Audio file is missing");
       }
+
+      const filePath = file.path;
+      if (!fs.existsSync(filePath)) {
+        return res.status(500).send(`File not found: ${filePath}`);
+      }
+
       const params = {
         name: "Audio",
         languageCode: language === 'ru' ? "ru-RU" : "en-US",
       };
 
-      const audioFileStream = fs.createReadStream(file.path);
+      const audioFileStream = fs.createReadStream(filePath);
 
       const audioOption = {
         url: 'https://api.symbl.ai/v1/process/audio',
@@ -42,7 +49,7 @@ class AudioController {
       const responses = {
         400: 'Bad Request! Please refer docs for correct input fields.',
         401: 'Unauthorized. Please generate a new access token.',
-        404: 'The conversation and/or it\'s metadata you asked could not be found, please check the input provided',
+        404: 'The conversation and/or its metadata you asked could not be found, please check the input provided',
         429: 'Maximum number of concurrent jobs reached. Please wait for some requests to complete.',
         500: 'Something went wrong! Please contact support@symbl.ai'
       };
@@ -50,11 +57,11 @@ class AudioController {
       audioFileStream.pipe(request.post(audioOption, (err, response, body) => {
         const statusCode = response.statusCode;
         if (err || Object.keys(responses).indexOf(statusCode.toString()) !== -1) {
-          throw new Error(responses[statusCode]);
+          throw new Error(responses[statusCode] || 'Unknown error occurred');
         }
         console.log('Status code: ', statusCode);
         console.log('Body', response.body);
-        fs.unlink(file.path, (unlinkErr) => {
+        fs.unlink(filePath, (unlinkErr) => {
           if (unlinkErr) {
             console.error('Error deleting file:', unlinkErr.message);
           }
