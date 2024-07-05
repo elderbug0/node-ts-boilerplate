@@ -15,7 +15,7 @@ Detection and duration of emotions (e.g., happiness, sadness, anger).
 Changes and transitions in facial expressions.
 Duration and frequency of eye contact with the camera.
 
-*Body Orientation:*
+*Body Orientation:*f
 Direction the body is facing relative to the camera/audience.
 Frequency and types of orientation changes.
 
