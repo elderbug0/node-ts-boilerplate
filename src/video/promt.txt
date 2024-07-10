@@ -1,38 +1,137 @@
-Please analyze the following video and provide detailed data on the speaker's body language. Be very strict, dont hallucinate, and give not only good things, but also which things should be impoved and how . Specifically, extract and report and give output structure like that, on the following aspects:
+Please analyze the following video and provide detailed data on the speaker's body language. Be strict and objective, including both positive aspects and areas for improvement. Specifically, extract and report on the following aspects, assigning a score from 0 to 10 for each category. Provide the output in JSON format GIVE ONLY JSON FORMAT AND NOTHING MORE:
 
-*Posture Analysis:*
+Posture Analysis:
 Duration of different postures (e.g., standing, sitting, leaning).
 Frequency and types of posture changes.
 Stability and balance during the speech.
 
-*Gesture Analysis:*
+Gesture Analysis:
 Frequency and types of hand gestures (e.g., open palm, pointing).
 Range and fluidity of arm movements.
 Frequency and types of head movements (e.g., nods, shakes).
 
-*Facial Expressions:*
+Facial Expressions:
 Detection and duration of emotions (e.g., happiness, sadness, anger).
 Changes and transitions in facial expressions.
 Duration and frequency of eye contact with the camera.
 
-*Body Orientation:*f
+Body Orientation:
 Direction the body is facing relative to the camera/audience.
 Frequency and types of orientation changes.
 
-*Movement Analysis:*
+Movement Analysis:
 Frequency and types of walking or pacing.
 Speed of movements (e.g., fast, slow, abrupt).
 
-*Proximity and Space Usage:*
+Proximity and Space Usage:
 Use of personal space (e.g., moving closer or further from the camera).
-Effective use of the space around the speaker.
+Effective use of the space around the speaker
 
-*Pose Analysis:*
+Pose Analysis:
 Confidence scores for detected poses.
 Symmetry in body posture and movements.
 Smoothness and effectiveness of pose transitions.
 
-*Non-verbal Cues:*
+Non-verbal Cues:
 Detection of microexpressions indicating underlying emotions.
 Small movements (e.g., twitching, fidgeting) that could indicate nervousness or other emotions.
-Ensure the data is accurate and avoid including any speculative or inferred information beyond the visible evidence in the video. Please provide a summary of the findings as well as detailed data points for each aspect listed.
+Ensure the data is accurate and avoid including any speculative or inferred information beyond the visible evidence in the video. Provide a summary of the findings as well as detailed data points for each aspect listed. Assign a score from 0 to 10 for each category.
+
+Example JSON Output
+{
+  "summary": {
+    "postureScore": 7,
+    "gestureScore": 8,
+    "facialExpressionsScore": 6,
+    "bodyOrientationScore": 9,
+    "movementScore": 5,
+    "proximityAndSpaceUsageScore": 7,
+    "poseScore": 8,
+    "nonVerbalCuesScore": 6
+  },
+  "details": {
+    "PostureAnalysis": {
+      "DurationOfPostures": {
+        "standing": "The speaker stood for the majority of the speech, maintaining a confident and open stance.",
+        "sitting": "The speaker did not sit during the speech.",
+        "leaning": "The speaker occasionally leaned, which might have indicated a casual attitude."
+      },
+      "FrequencyAndTypesOfPostureChanges": {
+        "standingToLeaning": "The speaker occasionally transitioned from standing to leaning, which might have been slightly distracting.",
+        "leaningToStanding": "The speaker corrected their posture from leaning to standing several times, showing awareness of their stance."
+      },
+      "StabilityAndBalance": {
+        "stableDuration": "The speaker maintained stability for most of the speech, demonstrating confidence.",
+        "unstableDuration": "The speaker had brief moments of instability, indicating possible nervousness.",
+        "comment": "Overall, the speaker maintained good balance but had moments of instability."
+      }
+    },
+    "GestureAnalysis": {
+      "HandGestures": {
+        "openPalm": "The speaker frequently used open palm gestures, which helped in appearing open and honest.",
+        "pointing": "The speaker occasionally pointed, which might have been perceived as aggressive."
+      },
+      "ArmMovements": {
+        "range": "The arm movements were moderate in range, suitable for the speech context.",
+        "fluidity": "The speaker's arm movements were smooth and well-controlled, enhancing the speech delivery."
+      },
+      "HeadMovements": {
+        "nods": "The speaker frequently nodded, showing engagement with the audience.",
+        "shakes": "The speaker occasionally shook their head, appropriately emphasizing certain points."
+      }
+    },
+    "FacialExpressions": {
+      "EmotionsDetected": {
+        "happiness": "The speaker often appeared happy, making the speech more engaging.",
+        "sadness": "The speaker sometimes showed sadness, which might have affected the overall positive tone.",
+        "anger": "The speaker briefly displayed anger, which could have been off-putting to the audience."
+      },
+      "ExpressionChanges": "The speaker's facial expressions changed frequently, adding dynamism to the speech.",
+      "EyeContact": {
+        "duration": "The speaker maintained eye contact for a substantial part of the speech, helping to connect with the audience.",
+        "frequency": "The speaker frequently looked at the camera, ensuring engagement."
+      }
+    },
+    "BodyOrientation": {
+      "DirectionFacing": {
+        "front": "The speaker mostly faced the front, directly engaging the audience.",
+        "side": "The speaker occasionally faced the side, which might have reduced engagement at times."
+      },
+      "OrientationChanges": "The speaker frequently changed orientation, keeping the audience attentive."
+    },
+    "MovementAnalysis": {
+      "WalkingOrPacing": {
+        "frequency": "The speaker walked or paced occasionally, helping to emphasize points but could have been slightly distracting.",
+        "types": "The movements were mostly pacing, which might have indicated nervousness."
+      },
+      "MovementSpeed": {
+        "fast": "The speaker occasionally moved quickly, which might have seemed rushed.",
+        "slow": "The speaker moved slowly for most of the speech, helping to maintain a calm and controlled delivery."
+      }
+    },
+    "ProximityAndSpaceUsage": {
+      "PersonalSpaceUsage": {
+        "movingCloser": "The speaker occasionally moved closer to the camera, enhancing engagement.",
+        "movingFurther": "The speaker rarely moved further from the camera, maintaining a consistent engagement distance."
+      },
+      "SpaceUsageEffectiveness": "The speaker effectively used the space around them, making the speech more dynamic."
+    },
+    "PoseAnalysis": {
+      "PoseConfidence": {
+        "averageConfidence": "The speaker maintained high confidence in their poses throughout the speech."
+      },
+      "Symmetry": "The speaker's body posture and movements were highly symmetrical, which was visually pleasing.",
+      "PoseTransitions": "The speaker's pose transitions were smooth, enhancing the overall delivery."
+    },
+    "NonVerbalCues": {
+      "Microexpressions": {
+        "nervousness": "The speaker occasionally showed microexpressions of nervousness.",
+        "otherEmotions": "The speaker displayed various other emotions subtly through microexpressions."
+      },
+      "SmallMovements": {
+        "twitching": "The speaker rarely twitched, indicating good control over small movements.",
+        "fidgeting": "The speaker occasionally fidgeted, which might have indicated underlying nervousness."
+      }
+    }
+  }
+}
