@@ -1,4 +1,4 @@
-Please analyze the following video and provide detailed data on the speaker's body language. Be strict and objective, including both positive aspects and areas for improvement. Specifically, extract and report on the following aspects, assigning a score from 0 to 10 for each category. Provide the output in JSON format GIVE ONLY JSON FORMAT AND NOTHING MORE:
+Please analyze the following video and provide detailed data on the speaker's body language. Be strict and objective, including both positive aspects and areas for improvement. Specifically, extract and report on the following aspects, assigning a score from 0 to 10 for each category. Provide the output in JSON format GIVE ONLY JSON FORMAT AND NOTHING MORE!!!!!!, DONT USE ''' JSON {} ''' AT YOU RESPONCE, I AM GETTING ERROR BEACUSE OF THAT, THE STCUTURE SHOULD BE LIKE THAT, DONT CHANGE THE STRUCURE OF JSON:  
 
 Posture Analysis:
 Duration of different postures (e.g., standing, sitting, leaning).
@@ -37,17 +37,17 @@ Detection of microexpressions indicating underlying emotions.
 Small movements (e.g., twitching, fidgeting) that could indicate nervousness or other emotions.
 Ensure the data is accurate and avoid including any speculative or inferred information beyond the visible evidence in the video. Provide a summary of the findings as well as detailed data points for each aspect listed. Assign a score from 0 to 10 for each category.
 
-Example JSON Output
+Example JSON Output (do not use this example as output, this is just template how you should stucture you json):
+
 {
   "summary": {
-    "postureScore": 7,
-    "gestureScore": 8,
-    "facialExpressionsScore": 6,
-    "bodyOrientationScore": 9,
-    "movementScore": 5,
-    "proximityAndSpaceUsageScore": 7,
-    "poseScore": 8,
-    "nonVerbalCuesScore": 6
+    "PostureAnalysis": 7,
+    "GestureAnalysis": 8,
+    "FacialExpressions": 9,
+    "BodyOrientation": 5,
+    "ProximityAndSpaceUsage": 7,
+    "PoseAnalysis": 8,
+    "NonVerbalCues": 6
   },
   "details": {
     "PostureAnalysis": {
@@ -98,16 +98,6 @@ Example JSON Output
         "side": "The speaker occasionally faced the side, which might have reduced engagement at times."
       },
       "OrientationChanges": "The speaker frequently changed orientation, keeping the audience attentive."
-    },
-    "MovementAnalysis": {
-      "WalkingOrPacing": {
-        "frequency": "The speaker walked or paced occasionally, helping to emphasize points but could have been slightly distracting.",
-        "types": "The movements were mostly pacing, which might have indicated nervousness."
-      },
-      "MovementSpeed": {
-        "fast": "The speaker occasionally moved quickly, which might have seemed rushed.",
-        "slow": "The speaker moved slowly for most of the speech, helping to maintain a calm and controlled delivery."
-      }
     },
     "ProximityAndSpaceUsage": {
       "PersonalSpaceUsage": {

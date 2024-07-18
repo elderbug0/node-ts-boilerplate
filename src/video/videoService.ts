@@ -3,10 +3,14 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 import fs from 'fs';
 import path from 'path';
 
-const API_KEY = 'AIzaSyAtmZXJDrZlo_ad2OhIJSjaWPqaEaCss-U';
+import dotenv from 'dotenv';
 
-const fileManager = new GoogleAIFileManager(API_KEY);
-const genAI = new GoogleGenerativeAI(API_KEY);
+dotenv.config();
+
+const API_KEY = process.env.GOOGLE_API_KEY;
+
+const fileManager = new GoogleAIFileManager(API_KEY!);
+const genAI = new GoogleGenerativeAI(API_KEY!);
 
 const readPromptFile = (filePath: string): string => {
   try {

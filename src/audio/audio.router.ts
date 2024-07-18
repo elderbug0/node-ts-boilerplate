@@ -4,7 +4,9 @@ import AudioService from './audio.service';
 import AudioController from './audio.controller';
 import * as fs from 'fs';
 import * as path from 'path';
+import dotenv from 'dotenv';
 
+dotenv.config();
 // Ensure the audio_data directory exists
 const audioDataDir = path.resolve(__dirname, 'audio_data');
 if (!fs.existsSync(audioDataDir)) {
@@ -28,12 +30,14 @@ const upload = multer({ storage: storage });
 
 const audioRouter = Router();
 
-const authToken = "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IlFVUTRNemhDUVVWQk1rTkJNemszUTBNMlFVVTRRekkyUmpWQ056VTJRelUxUTBVeE5EZzFNUSJ9.eyJodHRwczovL3BsYXRmb3JtLnN5bWJsLmFpL3VzZXJJZCI6IjYyNDY1MzE4MDAzNjcxMDQiLCJpc3MiOiJodHRwczovL2RpcmVjdC1wbGF0Zm9ybS5hdXRoMC5jb20vIiwic3ViIjoidzhXRlp2eWlEWjBETnlrdnFsSWZqRmZqVUU1REN6Q3hAY2xpZW50cyIsImF1ZCI6Imh0dHBzOi8vcGxhdGZvcm0ucmFtbWVyLmFpIiwiaWF0IjoxNzIwNjAyODUyLCJleHAiOjE3MjA2ODkyNTIsImd0eSI6ImNsaWVudC1jcmVkZW50aWFscyIsImF6cCI6Inc4V0ZadnlpRFowRE55a3ZxbElmakZmalVFNURDekN4In0.lOaYVYRXQELqXNNbolgjRmD8nrup8F2zzUXpOJaqaWwGjr8RV-Wrof_vh-NxehNigsnPK-g8ErL5IWAkuOm4RmGCnqYY0pfbyFZ7WlhrIRbiVk-lFN_sUhOLEcMoEBW8ibj5OQEXcYk115xf7WCrBcAuwRBnDbJeztFgyu7u4gHUzbiZmctt8BSQI_JzdEUr1RR3BlWtSTKGOk4BLIC12Gv-t9C0QsDQwA-7-tJwq6jVKWIeZzJfwSUdBTiXGbVFigxs9RuKDNzFqhqnQZTdmJYHEk8hexFl8rHKy9NbUprHj4dDUgZT3amoUKSZmPuRx_C3GJwhMql_-XS8y8EBMQ";
+const authToken = process.env.AUTH_TOKEN!;
+const openaiApiKey = process.env.OPENAI_API_KEY!;
 
-const audioService = new AudioService(authToken);
+const audioService = new AudioService(authToken, openaiApiKey);
 const audioController = new AudioController(audioService, authToken);
 
-audioRouter.post('/upload', upload.single('audio'), audioController.uploadAndSendAudio)
-audioRouter.post('/messages', upload.single('audio'), audioController.getMessages)
-audioRouter.post('/analyze', audioController.analyze)
+audioRouter.post('/uploadd', upload.single('audio'), audioController.uploadAndSendAudio);
+audioRouter.get('/status/:publicId', audioController.getAudioStatus);
+audioRouter.post('/analyze-text', audioController.analyzeSpeechText);
+
 export default audioRouter;

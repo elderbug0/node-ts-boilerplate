@@ -1,11 +1,5 @@
 import { Request, Response } from "express";
 import AudioService from "./audio.service";
-import axios from "axios";
-import request from "request";
-import * as fs from 'fs';
-import * as path from 'path';
-
-const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
 class AudioController {
   private audioService: AudioService;
@@ -17,135 +11,57 @@ class AudioController {
   }
 
   uploadAndSendAudio = async (req: Request, res: Response) => {
-    try {
-      const file = req.file;
-      const language = req.body.language || 'en'; // Default to English if not provided
-      if (!file) {
-        return res.status(400).send("Audio file is missing");
-      }
-
-      const filePath = file.path;
-      if (!fs.existsSync(filePath)) {
-        return res.status(500).send(`File not found: ${filePath}`);
-      }
-
-      const params = {
-        name: "Audio",
-        languageCode: language === 'ru' ? "ru-RU" : "en-US",
-      };
-
-      const audioFileStream = fs.createReadStream(filePath);
-
-      const audioOption = {
-        url: 'https://api.symbl.ai/v1/process/audio',
-        headers: {
-          'Authorization': `Bearer ${this.authToken}`,
-          'Content-Type': 'audio/wav'
-        },
-        qs: params,
-        json: true,
-      };
-
-      const responses = {
-        400: 'Bad Request! Please refer docs for correct input fields.',
-        401: 'Unauthorized. Please generate a new access token.',
-        404: 'The conversation and/or its metadata you asked could not be found, please check the input provided',
-        429: 'Maximum number of concurrent jobs reached. Please wait for some requests to complete.',
-        500: 'Something went wrong! Please contact support@symbl.ai'
-      };
-
-      audioFileStream.pipe(request.post(audioOption, (err, response, body) => {
-        const statusCode = response.statusCode;
-        if (err || Object.keys(responses).indexOf(statusCode.toString()) !== -1) {
-          throw new Error(responses[statusCode] || 'Unknown error occurred');
-        }
-        console.log('Status code: ', statusCode);
-        console.log('Body', response.body);
-        fs.unlink(filePath, (unlinkErr) => {
-          if (unlinkErr) {
-            console.error('Error deleting file:', unlinkErr.message);
-          }
-        });
-        return res.status(200).json(response.body);
-      }));
-    } catch (error: any) {
-      console.log(error.message);
-      return res.status(500).json({ error: error.message });
+    if (!req.file) {
+      return res.status(400).json({ error: "No file uploaded" });
     }
-  };
 
-  getMessages = async (req: Request, res: Response) => {
-    const { conversationId } = req.body;
-    const interval = 40000; // 30 seconds
-    let resultSent = false;
+    const filePath = req.file.path;
+    const language = req.body.language || 'en'; // Default to 'en' if not provided
 
-    const checkMessages = async () => {
-      try {
-        const messagesResponse = await axios.get(
-          `https://api.symbl.ai/v1/conversations/${conversationId}/messages?sentiment=true`,
-          {
-            headers: { Authorization: `Bearer ${this.authToken}` },
-          }
-        );
-
-        const analyticsResponse = await axios.get(
-          `https://api.symbl.ai/v1/conversations/${conversationId}/analytics`,
-          {
-            headers: { Authorization: `Bearer ${this.authToken}` },
-          }
-        );
-
-        if (
-          messagesResponse.data &&
-          messagesResponse.data.messages &&
-          messagesResponse.data.messages.length > 0 ||
-          analyticsResponse.data &&
-          analyticsResponse.data.analytics &&
-          analyticsResponse.data.analytics.length > 0
-        ) {
-          const combinedResponse = {
-            transcript: messagesResponse.data,
-            analytics: analyticsResponse.data
-          };
-          res.status(200).json(combinedResponse);
-          resultSent = true;
-        }
-      } catch (error: any) {
-        console.log('Error fetching messages and analytics:', error.message);
-      }
-    };
-
-    const intervalId = setInterval(async () => {
-      if (!resultSent) {
-        await checkMessages();
+    try {
+      const result = await this.audioService.saveAndSendAudio(filePath, language);
+      console.log("Result sent to frontend:", result);
+      res.json(result);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        res.status(500).json({ error: error.message });
       } else {
-        clearInterval(intervalId);
+        res.status(500).json({ error: "An unknown error occurred" });
       }
-    }, interval);
-
-    // Initial check
-    await checkMessages();
-  };
-
-  analyze = async (req: Request, res: Response) => {
-    try {
-      const { conversationId } = req.body;
-      console.log('Fetching analytics for conversationId:', conversationId); // Debug log
-
-      const response = await axios.get(
-        `https://api.symbl.ai/v1/conversations/${conversationId}/analytics`,
-        {
-          headers: { Authorization: `Bearer ${this.authToken}` },
-        }
-      );
-
-      console.log('Analytics response:', response.data); // Debug log
-      return res.status(200).json(response.data);
-    } catch (error: any) {
-      console.log('Error fetching analytics:', error.message); // Debug log
-      return res.status(500).json({ error: error.message });
     }
-  };
+  }
+
+  getAudioStatus = async (req: Request, res: Response) => {
+    const { publicId } = req.params;
+
+    try {
+      const result = await this.audioService.getAudioStatus(publicId);
+      console.log("Result sent to frontend:", result);
+      res.json(result);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        res.status(500).json({ error: error.message });
+      } else {
+        res.status(500).json({ error: "An unknown error occurred" });
+      }
+    }
+  }
+
+  analyzeSpeechText = async (req: Request, res: Response) => {
+    const { text, language } = req.body;
+
+    try {
+      const result = await this.audioService.analyzeSpeechText(text, language);
+      console.log("Result sent to frontend:", result);
+      res.json(result);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        res.status(500).json({ error: error.message });
+      } else {
+        res.status(500).json({ error: "An unknown error occurred" });
+      }
+    }
+  }
 }
 
 export default AudioController;
