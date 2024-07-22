@@ -20,7 +20,7 @@ class AudioService {
   public saveAndSendAudio = async (filePath: string, language: string): Promise<any> => {
     try {
       const form = new FormData();
-      form.append("providers", "amazon");
+      form.append("providers", "openai");
       form.append("file", fs.createReadStream(filePath));
       form.append("language", language); // Set the language dynamically
 
