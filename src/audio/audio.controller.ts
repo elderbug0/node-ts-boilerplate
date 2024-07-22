@@ -28,6 +28,12 @@ class AudioController {
       } else {
         res.status(500).json({ error: "An unknown error occurred" });
       }
+    } finally {
+      try {
+        await this.audioService.deleteFile(filePath);
+      } catch (error) {
+        console.error(error);
+      }
     }
   }
 

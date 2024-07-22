@@ -81,6 +81,16 @@ class AudioService {
       throw new Error(`Failed to analyze speech text: ${error.message}`);
     }
   };
+
+  public deleteFile = async (filePath: string): Promise<void> => {
+    try {
+      await fs.promises.unlink(filePath);
+      console.log(`File ${filePath} deleted successfully`);
+    } catch (error: any) {
+      console.error(`Failed to delete file ${filePath}: ${error.message}`);
+      throw new Error(`Failed to delete file: ${error.message}`);
+    }
+  };
 }
 
 export default AudioService;
