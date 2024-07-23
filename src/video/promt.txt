@@ -1,41 +1,5 @@
 Please analyze the following video and provide detailed data on the speaker's body language. Be strict and objective, including both positive aspects and areas for improvement. Specifically, extract and report on the following aspects, assigning a score from 0 to 10 for each category. Provide the output in JSON format GIVE ONLY JSON FORMAT AND NOTHING MORE!!!!!!, DONT USE ''' JSON {} ''' AT YOU RESPONCE, I AM GETTING ERROR BEACUSE OF THAT, THE STCUTURE SHOULD BE LIKE THAT, DONT CHANGE THE STRUCURE OF JSON:  
 
-Posture Analysis:
-Duration of different postures (e.g., standing, sitting, leaning).
-Frequency and types of posture changes.
-Stability and balance during the speech.
-
-*Gesture Analysis:*
-Frequency and types of hand gestures (e.g., open palm, pointing).
-Range and fluidity of arm movements.
-Frequency and types of head movements (e.g., nods, shakes).
-
-Facial Expressions:
-Detection and duration of emotions (e.g., happiness, sadness, anger).
-Changes and transitions in facial expressions.
-Duration and frequency of eye contact with the camera.
-
-Body Orientation:
-Direction the body is facing relative to the camera/audience.
-Frequency and types of orientation changes.
-
-Movement Analysis:
-Frequency and types of walking or pacing.
-Speed of movements (e.g., fast, slow, abrupt).
-
-Proximity and Space Usage:
-Use of personal space (e.g., moving closer or further from the camera).
-Effective use of the space around the speaker
-
-Pose Analysis:
-Confidence scores for detected poses.
-Symmetry in body posture and movements.
-Smoothness and effectiveness of pose transitions.
-
-Non-verbal Cues:
-Detection of microexpressions indicating underlying emotions.
-Small movements (e.g., twitching, fidgeting) that could indicate nervousness or other emotions.
-Ensure the data is accurate and avoid including any speculative or inferred information beyond the visible evidence in the video. Provide a summary of the findings as well as detailed data points for each aspect listed. Assign a score from 0 to 10 for each category.
 
 Example JSON Output (do not use this example as output, this is just template how you should stucture you json):
 
